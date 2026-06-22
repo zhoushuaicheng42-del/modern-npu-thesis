@@ -88,7 +88,7 @@
 
 == 双涡卷流场模型
 
-双涡卷流场（Double-Gyre Flow）是一种具有解析速度场描述的二维非定常流动模型，最早用于研究大尺度海洋环流中的混合与拉格朗日相干结构。该流场定义在无量纲区域 $[0,2] \times [0,1]$ 上，其速度场由如下流函数导出：
+双涡卷流场（Double-Gyre Flow）是一种具有解析速度场描述的二维非定常流动模型，最早用于研究大尺度海洋环流中的混合与拉格朗日相干结构。该流场定义在无量纲区域 $\[0, 2\] times \[0, 1\]$ 上，其速度场由如下流函数导出：
 
 $ phi(x, y, t) = A sin(pi f(x, t)) sin(pi y) $
 
@@ -106,7 +106,7 @@ $ f(x, t) = a(t) x^2 + b(t) x $
 
 $ a(t) = epsilon sin(omega t), quad b(t) = 1 - 2 epsilon sin(omega t) $
 
-在上述表达式中，参数 $A$ 决定了速度矢量的幅值，$epsilon$ 控制左右两个涡卷分离线在 $x$ 轴方向的振荡幅度，$omega$ 为振荡角频率。除特别说明外，本文采用默认参数组：$A = 0.1$，$epsilon = 0.25$，$omega = 2pi \/ 10$。在该参数设置下，流场呈现两个对称涡卷交替伸缩的周期性结构，分离线在 $x \approx 1$ 附近往复振荡。
+在上述表达式中，参数 $A$ 决定了速度矢量的幅值，$epsilon$ 控制左右两个涡卷分离线在 $x$ 轴方向的振荡幅度，$omega$ 为振荡角频率。除特别说明外，本文采用默认参数组：$A = 0.1$，$epsilon = 0.25$，$omega = 2pi / 10$。在该参数设置下，流场呈现两个对称涡卷交替伸缩的周期性结构，分离线在 $x approx 1$ 附近往复振荡。
 
 == 自推进体动力学模型
 
@@ -116,23 +116,23 @@ $ bold(u)_("agent") = bold(u)_("fluid") + bold(u)_("propel") $
 
 自推进体的位置通过以下运动学关系更新：
 
-$ (d bold(x)_("agent")) \/ (d t) = bold(u)_("agent") $
+$ (d bold(x)_("agent")) / (d t) = bold(u)_("agent") $
 
 值得指出的是，本文采用这一简化的运动学模型，是为了在物理合理性与数值可控性之间取得平衡。该模型将流体混沌运动与自推进体复杂动力学解耦，使我们能够集中关注强化学习算法对迁移策略的优化能力。
 
-在训练过程中，限制自推进体在 $x$ 和 $y$ 方向的驱动速度分量均不超过 $A = 0.1$，即 $norm(bold(u)_("propel"))^2 \leq 0.02$。这一约束确保自推进体的最大驱动能力不超过背景流场的最大速度，从而迫使智能体必须通过"利用流场结构"而非"纯自力推进"来完成迁移任务，更贴近真实场景中推进功率受限的工程约束。
+在训练过程中，限制自推进体在 $x$ 和 $y$ 方向的驱动速度分量均不超过 $A = 0.1$，即 $norm(bold(u)_("propel"))^2 <=0.02$。这一约束确保自推进体的最大驱动能力不超过背景流场的最大速度，从而迫使智能体必须通过"利用流场结构"而非"纯自力推进"来完成迁移任务，更贴近真实场景中推进功率受限的工程约束。
 
 === 能量消耗定义
 
 自推进体在迁移过程中消耗的推进能量 $E_("propel")$ 定义为驱动速度的动能在整个迁移时间内的积分：
 
-$ E_("propel") = integral_0^T 1\/2 norm(bold(u)_("propel")(t))^2 d t $
+$ E_("propel") = integral_0^T 1/2 norm(bold(u)_("propel")(t))^2 d t $
 
 其中 $T$ 为迁移总时间。推进能量衡量的是自推进体为实现迁移所付出的"自身努力"，是本文优化的核心目标函数。
 
 此外，定义自推进体的总动能为：
 
-$ E_("total") = integral_0^T 1\/2 norm(bold(u)_("agent")(t))^2 d t $
+$ E_("total") = integral_0^T 1/2 norm(bold(u)_("agent")(t))^2 d t $
 
 总动能包含了背景流场对自推进体的加速贡献与自推进体自身推进贡献的叠加效应，反映了自推进体在迁移过程中整体的运动剧烈程度。通过对两种能量的对比分析，可以揭示智能体"借流而行"的省力机制：当自推进体顺应流场方向运动时，其总动能的增长主要来源于流场输送而非自身推进，从而以较小的 $E_("propel")$ 获得了较大的位移。
 
@@ -144,9 +144,9 @@ $ E_("total") = integral_0^T 1\/2 norm(bold(u)_("agent")(t))^2 d t $
 
 在标准强化学习中，智能体的目标是最大化累积奖励的期望值。SAC在此基础上引入了熵正则化项，鼓励策略在优化奖励的同时保持足够的随机性，以促进探索并避免过早收敛到局部最优。最大熵强化学习的目标函数可以表述为：
 
-$ pi^* = "arg" max_pi E_(tau tilde pi) [ sum_(t=0)^infinity (R(s_t, a_t, s_(t+1)) + alpha H(pi(cdot | s_t))) ] $
+$ pi^* = "arg" max_pi E_(tau tilde pi) [ sum_(t=0)^infinity (R(s_t, a_t, s_(t+1)) + alpha H(pi(dot | s_t))) ] $
 
-其中，$pi^*$ 为最优策略，$R(s_t, a_t, s_(t+1))$ 为即时奖励函数，$alpha$ 为温度系数，控制熵正则化项与奖励之间的权衡。熵 $H(pi(cdot | s_t))$ 定义为策略在状态 $s_t$ 下输出动作分布的熵，$H = -E_(a tilde pi)[log pi(a | s)]$。当 $alpha$ 较大时，策略倾向于更均匀地探索动作空间；当 $alpha$ 较小时，策略更专注于最大化奖励。
+其中，$pi^*$ 为最优策略，$R(s_t, a_t, s_(t+1))$ 为即时奖励函数，$alpha$ 为温度系数，控制熵正则化项与奖励之间的权衡。熵 $H(pi(dot | s_t))$ 定义为策略在状态 $s_t$ 下输出动作分布的熵，$H = -E_(a tilde pi)[log pi(a | s)]$。当 $alpha$ 较大时，策略倾向于更均匀地探索动作空间；当 $alpha$ 较小时，策略更专注于最大化奖励。
 
 SAC算法采用演员—评论家架构。评论家（Critic）网络 $Q_theta(s, a)$ 用于近似状态—动作值函数，估计在当前状态下采取特定动作的期望累积奖励。演员（Actor）网络 $pi_phi(a | s)$ 输出动作的随机策略（通常为高斯分布的均值和标准差）。训练过程中，评论家通过最小化时序差分误差更新，演员通过最大化评论家给出的 $Q$ 值与策略熵的加权和来更新。SAC同时维护两个 $Q$ 网络以缓解高估偏差问题。
 
@@ -154,7 +154,7 @@ SAC算法采用演员—评论家架构。评论家（Critic）网络 $Q_theta(s
 
 在双涡卷流场的训练中，观测变量包括背景流场速度 $bold(u)_("fluid")$、自推进体当前空间位置 $bold(x)_("agent")$ 以及当前时间 $t$。因此，状态空间取为 $S = [bold(x)_("agent"), bold(u)_("fluid"), t]$。这些变量包含了智能体做出决策所需的全部局部信息：位置和流场速度用于判断当前位置的流动结构与到目标的距离，时间变量用于捕捉流场周期性变化的相位信息。
 
-智能体的动作空间为控制自身驱动速度的方向与大小，即 $A = bold(u)_("propel") = [u_("propel"), v_("propel")]$。由于SAC算法要求标准化的动作空间，实际驱动速度 $bold(u)_("propel")$ 由标准化动作 $bold(u)_p \in [-1, 1]^2$ 经缩放得到，确保各分量幅值不超过预设限制。
+智能体的动作空间为控制自身驱动速度的方向与大小，即 $A = bold(u)_("propel") = [u_("propel"), v_("propel")]$。由于SAC算法要求标准化的动作空间，实际驱动速度 $bold(u)_("propel")$ 由标准化动作 $bold(u)_p in \[-1, 1\]^2$ 经缩放得到，确保各分量幅值不超过预设限制。
 
 === 奖励函数设计
 
@@ -164,7 +164,7 @@ $ r(t) = r_s(t) + r_e(t) + r_h(t) $
 
 第一项 $r_s$ 为状态奖励，反映智能体当前位置与任务的关联：若智能体移出流场区域，给予惩罚 $-10$；若智能体向目标靠近（即当前位置到目标的距离小于上一时刻的距离），给予基础奖励 $e_("basic")$；否则奖励为 $0$。该设计鼓励智能体持续朝目标方向运动。
 
-第二项 $r_e$ 为能耗奖励，反映驱动速度与流场速度之间的关系。若驱动速度矢量 $bold(u)_("propel")$ 与流场速度矢量 $bold(u)_("fluid")$ 的夹角 $alpha \leq 90^circ$（即"顺流"方向），则给予奖励 $e_("basic") + (e_("max") - e)$，其中 $e = 1\/2 norm(bold(u)_("propel"))^2$ 为瞬时推进功率，$e_("basic") = e_("max") = 1\/2 (norm(bold(u)_("propel"))_("max"))^2$。这意味着顺流时，推进速度越小，获得的奖励越高，从而鼓励智能体"少用力、多借力"。若夹角 $alpha > 90^circ$（即"逆流"方向），则给予惩罚 $-(e_("basic") + e)$，推进速度越大惩罚越重。
+第二项 $r_e$ 为能耗奖励，反映驱动速度与流场速度之间的关系。若驱动速度矢量 $bold(u)_("propel")$ 与流场速度矢量 $bold(u)_("fluid")$ 的夹角 $alpha <=90°$（即"顺流"方向），则给予奖励 $e_("basic") + (e_("max") - e)$，其中 $e = 1/2 norm(bold(u)_("propel"))^2$ 为瞬时推进功率，$e_("basic") = e_("max") = 1/2 (norm(bold(u)_("propel"))_("max"))^2$。这意味着顺流时，推进速度越小，获得的奖励越高，从而鼓励智能体"少用力、多借力"。若夹角 $alpha > 90°$（即"逆流"方向），则给予惩罚 $-(e_("basic") + e)$，推进速度越大惩罚越重。
 
 第三项 $r_h$ 为时间奖励：若智能体在最大时间 $t_("max")$ 内未能到达目标，给予惩罚 $-5$；若智能体到达目标（即距目标距离小于阈值 $delta_0 = 0.05$），则给予与剩余时间成正比的奖励 $epsilon (t_("max") - t)$，激励智能体尽早到达目标；此外，时间奖励为 $0$。
 
@@ -174,9 +174,9 @@ $ r(t) = r_s(t) + r_e(t) + r_h(t) $
 
 在评估智能体是否真正"借力"流场时，仅计算能耗数值对比尚不足够，还需从力学机理层面定量刻画智能体推进方向与流场方向的关联。本文引入余弦相似度（Cosine Similarity）作为补充分析指标。对于每个有效时间步，计算推进速度矢量与流场速度矢量之间的余弦相似度：
 
-$ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold(u)_("propel")(t)) cdot norm(bold(u)_("fluid")(t))) $
+$ "cos_sim"(t) = (bold(u)_("propel")(t) dot bold(u)_("fluid")(t)) / (norm(bold(u)_("propel")(t)) dot norm(bold(u)_("fluid")(t))) $
 
-余弦相似度的取值范围为 $[-1, 1]$，值越接近 $1$ 表示两个矢量方向越趋于一致，值越接近 $-1$ 表示方向趋于相反。在有效运动步数（排除静止帧）上进行时间平均，可得到一个反映全局策略特征的标量指标。若余弦相似度显著为正，则说明智能体在统计意义上采用了"顺应流场"的策略，从力学层面验证了节能效果的物理根源。早期的互相关系数分析由于角度计算的周期性和静止数据干扰，仅得到约0.3的低值。引入余弦相似度后，该指标稳定在0.5左右（对应约60度平均夹角），揭示了智能体在"顺应流场省力"与"保留横向分量寻路"之间的最优平衡。
+余弦相似度的取值范围为 $\[-1, 1\]$，值越接近 $1$ 表示两个矢量方向越趋于一致，值越接近 $-1$ 表示方向趋于相反。在有效运动步数（排除静止帧）上进行时间平均，可得到一个反映全局策略特征的标量指标。若余弦相似度显著为正，则说明智能体在统计意义上采用了"顺应流场"的策略，从力学层面验证了节能效果的物理根源。早期的互相关系数分析由于角度计算的周期性和静止数据干扰，仅得到约0.3的低值。引入余弦相似度后，该指标稳定在0.5左右（对应约60度平均夹角），揭示了智能体在"顺应流场省力"与"保留横向分量寻路"之间的最优平衡。
 
 
 = 双涡卷流场中自推进体的迁移策略
@@ -188,16 +188,16 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 图1展示了经训练收敛后的智能体在双涡卷流场中四个典型时刻的瞬时轨迹。黑色虚线表示智能体自起点出发后所经过的路径，背景矢量场为双涡卷流场的瞬时速度分布，矢量按速度幅值着色。
 
 #capfig(
-  image("../../final_fig/fig.1.svg", width: 80%),
+  image("../final_fig/fig.1.svg", width: 80%),
   caption: [智能体在双涡卷流场中四个典型时刻的轨迹，其中(a) $t=2.2$，(b) $t=4.2$，(c) $t=6.7$，(d) $t=8.2$。黑色虚线为智能体轨迹，箭头表示流场速度矢量并按速度大小着色。],
   label: <fig-trajectory>,
 )
 
 从图1可以清晰地观察到智能体"借流而行"的迁移策略。在 $t = 2.2$ 时刻（图1a），智能体从右上角出发后并未径直冲向目标，而是先向左移动，利用右涡上半部自右向左的水平流动输送自身；到达右涡左上角（约 $(1.0, 0.9)$ 位置）后，如 $t = 4.2$ 时刻所示（图1b），智能体转向下方，利用右涡左侧自上而下的垂直流动；随后在 $t = 6.7$ 时刻（图1c），智能体漂移至左涡右下角（约 $(1.0, 0.1)$ 位置），跟随左涡底部自右向左的水平流动；最终在 $t = 8.2$ 时刻（图1d），智能体借助左涡自下而上的垂直流动抵达目标点 $(0.25, 0.8)$。
 
-在这一完整的迁移过程中，智能体的驱动方向始终与当地流场方向保持较小的夹角，仅在两个涡卷的交界处（$x \approx 1$ 附近）需要消耗较多的推进能量以跨越分离线，从右涡切换到左涡。这种行为模式非常类似于海洋生物利用洋流进行长距离迁移的策略，也印证了活性物质理论中"通过环境能量输运实现自组织运动"的核心思想。
+在这一完整的迁移过程中，智能体的驱动方向始终与当地流场方向保持较小的夹角，仅在两个涡卷的交界处（$x approx 1$ 附近）需要消耗较多的推进能量以跨越分离线，从右涡切换到左涡。这种行为模式非常类似于海洋生物利用洋流进行长距离迁移的策略，也印证了活性物质理论中"通过环境能量输运实现自组织运动"的核心思想。
 
-为定量描述推进方向与流场方向之间的关联，本文计算了智能体在所有有效运动步数（排除速度为零的帧）上的推进—流场余弦相似度。结果显示，平均余弦相似度约为 $0.5$，对应推进速度矢量与流场速度矢量之间的平均夹角约为 $60^circ$。这一数值反映了智能体策略的精妙之处：推进方向既不完全平行于流场（那样将丧失横向寻路能力），也不完全垂直于流场（那样将无法借力省能），而是在"顺应流场节省自身能耗"与"保留横向分速度接近目标"之间取得了最优平衡。这一发现从定量力学角度解释了智能体"借流而行"策略的底层机制。
+为定量描述推进方向与流场方向之间的关联，本文计算了智能体在所有有效运动步数（排除速度为零的帧）上的推进—流场余弦相似度。结果显示，平均余弦相似度约为 $0.5$，对应推进速度矢量与流场速度矢量之间的平均夹角约为 $60°$。这一数值反映了智能体策略的精妙之处：推进方向既不完全平行于流场（那样将丧失横向寻路能力），也不完全垂直于流场（那样将无法借力省能），而是在"顺应流场节省自身能耗"与"保留横向分速度接近目标"之间取得了最优平衡。这一发现从定量力学角度解释了智能体"借流而行"策略的底层机制。
 
 == 能耗对比分析
 
@@ -206,7 +206,7 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 图2展示了直线策略（图2a）与智能策略（图2b）在双涡卷流场中的轨迹对比。轨迹按智能体的瞬时速度大小进行着色。
 
 #capfig(
-  image("../../final_fig/fig.2.svg", width: 80%),
+  image("../final_fig/fig.2.svg", width: 80%),
   caption: [双涡卷流场中(a)直线推进基准策略与(b)智能策略的轨迹对比。轨迹按瞬时速度大小着色。],
   label: <fig-compare-trajectory>,
 )
@@ -216,7 +216,7 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 图3进一步从能量角度给出了定量对比，分别展示了智能体与直线体在迁移过程中的推进能耗 $E_("propel")$（图3a）和总动能 $E_("total")$（图3b）的累积曲线。
 
 #capfig(
-  image("../../final_fig/fig.3.svg", width: 80%),
+  image("../final_fig/fig.3.svg", width: 80%),
   caption: [智能体与直线体在双涡卷流场中的累积(a)推进能耗 $E_("propel")$ 和(b)总动能 $E_("total")$ 对比。],
   label: <fig-energy-compare>,
 )
@@ -232,14 +232,14 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 
 #capsubfig(
   (
-    (content: image("../../final_fig/Fig.4/A=0.010.png", width: 45%), subcaption: [$A=0.01$]),
-    (content: image("../../final_fig/Fig.4/A=0.050.png", width: 45%), subcaption: [$A=0.05$]),
-    (content: image("../../final_fig/Fig.4/A=0.080.png", width: 45%), subcaption: [$A=0.08$]),
-    (content: image("../../final_fig/Fig.4/A=0.090.png", width: 45%), subcaption: [$A=0.09$]),
-    (content: image("../../final_fig/Fig.4/A=0.100.png", width: 45%), subcaption: [$A=0.10$]),
-    (content: image("../../final_fig/Fig.4/A=0.110.png", width: 45%), subcaption: [$A=0.11$]),
-    (content: image("../../final_fig/Fig.4/A=0.120.png", width: 45%), subcaption: [$A=0.12$]),
-    (content: image("../../final_fig/Fig.4/A=1.000.png", width: 45%), subcaption: [$A=1.00$]),
+    (content: image("../final_fig/Fig.4/A=0.010.png", width: 45%), subcaption: [$A=0.01$]),
+    (content: image("../final_fig/Fig.4/A=0.050.png", width: 45%), subcaption: [$A=0.05$]),
+    (content: image("../final_fig/Fig.4/A=0.080.png", width: 45%), subcaption: [$A=0.08$]),
+    (content: image("../final_fig/Fig.4/A=0.090.png", width: 45%), subcaption: [$A=0.09$]),
+    (content: image("../final_fig/Fig.4/A=0.100.png", width: 45%), subcaption: [$A=0.10$]),
+    (content: image("../final_fig/Fig.4/A=0.110.png", width: 45%), subcaption: [$A=0.11$]),
+    (content: image("../final_fig/Fig.4/A=0.120.png", width: 45%), subcaption: [$A=0.12$]),
+    (content: image("../final_fig/Fig.4/A=1.000.png", width: 45%), subcaption: [$A=1.00$]),
   ),
   columns: 2,
   caption: [不同流场控制参数 $A$ 下智能体的迁移轨迹。轨迹按瞬时速度大小着色。],
@@ -262,10 +262,10 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 
 #capsubfig(
   (
-    (content: image("../../final_fig/fig.5/sub1_10000_steps.svg", width: 45%), subcaption: [训练10 000步时的轨迹]),
-    (content: image("../../final_fig/fig.5/sub2_100000_steps.svg", width: 45%), subcaption: [训练100 000步时的轨迹]),
-    (content: image("../../final_fig/fig.5/sub3_best_model.svg", width: 45%), subcaption: [最优模型的轨迹]),
-    (content: image("../../final_fig/fig.5/trainprocess_DG.svg", width: 45%), subcaption: [奖励随训练步数的变化曲线]),
+    (content: image("../final_fig/fig.5/sub1_10000_steps.svg", width: 45%), subcaption: [训练10 000步时的轨迹]),
+    (content: image("../final_fig/fig.5/sub2_100000_steps.svg", width: 45%), subcaption: [训练100 000步时的轨迹]),
+    (content: image("../final_fig/fig.5/sub3_best_model.svg", width: 45%), subcaption: [最优模型的轨迹]),
+    (content: image("../final_fig/fig.5/trainprocess_DG.svg", width: 45%), subcaption: [奖励随训练步数的变化曲线]),
   ),
   columns: 2,
   caption: [训练过程中的轨迹演化与奖励收敛曲线。(a)训练早期(10 000步)；(b)训练中期(100 000步)；(c)训练收敛后的最优模型轨迹；(d)每幕奖励随训练步长的变化趋势，蓝点为各幕奖励，橙线为100幕滑动平均。],
@@ -289,9 +289,9 @@ $ "cos_sim"(t) = (bold(u)_("propel")(t) cdot bold(u)_("fluid")(t)) \/ (norm(bold
 
 #capsubfig(
   (
-    (content: image("../../final_fig/fig.6/traj_53_ecompare.svg", width: 45%), subcaption: [测试案例53的能耗对比]),
-    (content: image("../../final_fig/fig.6/traj_87_ecompare.svg", width: 45%), subcaption: [测试案例87的能耗对比]),
-    (content: image("../../final_fig/fig.6/traj_91_ecompare.svg", width: 45%), subcaption: [测试案例91的能耗对比]),
+    (content: image("../final_fig/fig.6/traj_53_ecompare.svg", width: 45%), subcaption: [测试案例53的能耗对比]),
+    (content: image("../final_fig/fig.6/traj_87_ecompare.svg", width: 45%), subcaption: [测试案例87的能耗对比]),
+    (content: image("../final_fig/fig.6/traj_91_ecompare.svg", width: 45%), subcaption: [测试案例91的能耗对比]),
   ),
   columns: 2,
   caption: [三组典型随机起终点对的迁移能耗对比。蓝色曲线为直线基准策略的累积能耗，橙色曲线为智能策略的累积能耗。],
